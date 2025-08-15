@@ -3,7 +3,6 @@
 export const isStandaloneDisplayMode = (): boolean => {
   try {
     // iOS Safari uses navigator.standalone; others support display-mode media query
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const navStandalone = (navigator as any).standalone === true
     const mediaStandalone = window.matchMedia('(display-mode: standalone)').matches
     return navStandalone || mediaStandalone

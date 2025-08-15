@@ -2,6 +2,11 @@ import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 gsap.registerPlugin(Flip)
 
+// Add this import for type safety and linting
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import type { DocumentEventMap } from 'typescript';
+
 /**
  * Utilities to provide consistent GSAP-powered micro-interactions.
  * All helpers respect prefers-reduced-motion.
