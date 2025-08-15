@@ -1,3 +1,40 @@
+# Motion Lite
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://remarkable-kheer-590733.netlify.app/) ![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
+
+Lightweight, offline-friendly workout planner and tracker. Import a CSV of your training plan, select sessions, and run through workouts with a clean, mobile-first UI optimized for iPhone PWAs.
+
+---
+
+## Table of Contents
+- [Demo](#demo)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Requirements](#requirements)
+- [Getting Started](#getting-started)
+- [Motion System](#motion-system)
+- [Scripts](#scripts)
+- [Project Structure](#project-structure)
+- [Configuration](#configuration)
+- [PWA / Offline](#pwa--offline)
+- [CSV Import Format](#csv-import-format)
+- [App Architecture](#app-architecture)
+- [Running Tests](#running-tests)
+- [Linting](#linting)
+- [Building and Deployment](#building-and-deployment)
+- [Development Tips](#development-tips)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Demo
+
+**Live Demo:** [remarkable-kheer-590733.netlify.app](https://remarkable-kheer-590733.netlify.app/#landing)
+
+> **Note:** This app works best on mobile devices and is intended to be installed as a web app (PWA). The desktop version is not fully optimized.
+
 ### Motion Lite
 
 Lightweight, offline-friendly workout planner and tracker. Import a CSV of your training plan, select sessions, and run through workouts with a clean, mobile-first UI optimized for iPhone PWAs.
@@ -207,10 +244,27 @@ npm run deploy         # helper script: build, verify, and create site.zip
 
 ### Contributing
 
-Issues and PRs are welcome. Please run tests and lint before submitting.
+Contributions are welcome! Please fork the repository and submit a pull request. For detailed guidelines, see [CONTRIBUTING.md](docs/CONTRIBUTING.md).
+
+### Code of Conduct
+
+Please note that this project adheres to a [Code of Conduct](docs/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
 ### License
 
-No license specified. If you plan to use this in production, add a `LICENSE` file.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+**Author:** [poferraz](https://github.com/poferraz)
+
+## Try It Yourself: Example CSV
+
+> **Note:** Motion Lite requires a specific CSV format to work. You can download an example CSV to test the app:
+>
+> [Download example CSV](public/test-csv)
+>
+> - The CSV must include these required headers: `Day`, `Exercise`, `Sets`, `Reps or Time`, `Weight`
+> - See the [CSV Import Format](#csv-import-format) section below for details and header aliases.
 
 
