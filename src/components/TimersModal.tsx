@@ -261,14 +261,14 @@ function TimersModal({ isOpen, onClose }: TimersModalProps) {
       {/* Modal */}
       <div 
         ref={containerRef}
-        className="relative bg-zinc-900 rounded-t-2xl w-full max-w-[430px] max-h-[80vh] overflow-hidden border border-zinc-800"
+        className="relative bg-zinc-900 rounded-t-2xl w-full max-w-[430px] max-h-80dvh overflow-hidden border border-zinc-800"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
         role="dialog"
         aria-modal="true"
         aria-labelledby="timers-title"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-zinc-800">
+        <div className="flex items-center justify-between clamp-py border-b border-zinc-800">
           <h2 id="timers-title" className="text-xl font-semibold text-white">
             Timers
           </h2>
@@ -282,7 +282,7 @@ function TimersModal({ isOpen, onClose }: TimersModalProps) {
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="clamp-py clamp-gap">
           {/* Countdown Section */}
           <section aria-labelledby="countdown-title">
             <h3 id="countdown-title" className="text-lg font-semibold text-white mb-4">
@@ -343,7 +343,7 @@ function TimersModal({ isOpen, onClose }: TimersModalProps) {
             </div>
 
             {/* Controls */}
-            <div className="flex gap-2 mb-4">
+            <div className="flex justify-center gap-4 mt-6">
               <button
                 onClick={startCountdown}
                 disabled={timerState.countdown.remainingMs === 0 || timerState.countdown.isRunning}

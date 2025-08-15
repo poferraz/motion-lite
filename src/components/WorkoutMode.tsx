@@ -401,7 +401,7 @@ function WorkoutMode({ parsedRows, selectedSessions, onClose }: WorkoutModeProps
       </div>
 
       {/* Main Content */}
-      <main className="px-4 py-3 pb-0 space-y-3 overflow-y-auto flex-1 bg-zinc-900">
+      <main className="clamp-py clamp-gap overflow-y-auto flex-1 bg-zinc-900">
         {currentExercise ? (
           <>
             {/* Exercise Name and Muscle Groups */}
@@ -741,7 +741,7 @@ function WorkoutMode({ parsedRows, selectedSessions, onClose }: WorkoutModeProps
       </main>
 
       {/* Footer */}
-      <footer className="bg-zinc-900 border-t border-zinc-800 pt-4 pb-4 px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)' }}>
+      <footer className="bg-zinc-900 border-t border-zinc-800 clamp-py px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)' }}>
         <div className="flex space-x-4">
           <button
             onClick={() => handleExerciseChange((currentExerciseIndex[currentSession.name] || 0) - 1)}

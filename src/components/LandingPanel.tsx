@@ -9,9 +9,10 @@ interface LandingPanelProps {
   onReplaceCSV: () => void
   onStartWorkoutMode: () => void
   onReset: () => void
+  onStartBuilder: () => void // new prop
 }
 
-function LandingPanel({ onUploadCSV, hasExistingData, onReplaceCSV, onStartWorkoutMode, onReset }: LandingPanelProps) {
+function LandingPanel({ onUploadCSV, hasExistingData, onReplaceCSV, onStartWorkoutMode, onReset, onStartBuilder }: LandingPanelProps) {
   const [csvMeta, setCsvMeta] = useState<{ sessionsCount: number; uploadedAt: number } | null>(null)
   const headlineRef = useRef<HTMLHeadingElement | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -98,6 +99,15 @@ function LandingPanel({ onUploadCSV, hasExistingData, onReplaceCSV, onStartWorko
             </button>
           </div>
           <div className="text-white my-4">Or</div>
+          <button
+            onClick={onStartBuilder}
+            className="bg-gradient-to-r from-blue-500 to-purple-500 w-full py-3 rounded-xl flex items-center justify-center space-x-2 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/40 transition-all duration-200 mb-6"
+            data-pressable
+            data-landing-cta
+          >
+            <span className="material-symbols-outlined">auto_awesome</span>
+            <span className="font-semibold">Build Your Workout</span>
+          </button>
           <div className="bg-zinc-900 rounded-2xl p-6 w-full" data-landing-update>
             <div className="bg-zinc-700/50 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
               <span className="material-symbols-outlined text-zinc-400" data-landing-icon>upload_file</span>
@@ -152,6 +162,15 @@ function LandingPanel({ onUploadCSV, hasExistingData, onReplaceCSV, onStartWorko
               </div>
             </div>
           </div>
+          <button
+            onClick={onStartBuilder}
+            className="btn-gradient w-full flex items-center justify-center space-x-2 relative z-10 mt-4"
+            data-pressable
+            data-landing-cta
+          >
+            <span className="material-symbols-outlined">auto_awesome</span>
+            <span className="font-semibold">Build Your Workout</span>
+          </button>
         </>
       )}
     </div>

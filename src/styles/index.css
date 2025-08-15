@@ -311,3 +311,22 @@ main, .scroll-container {
 .icon-container-zinc {
   @apply bg-zinc-700/50;
 }
+
+/* Utility for max-height: 80dvh with fallback */
+.max-h-80dvh {
+  max-height: 80dvh;
+}
+@supports not (height: 100dvh) {
+  .max-h-80dvh {
+    max-height: 80svh;
+  }
+}
+
+/* Clamp-based vertical padding and gap utilities for mobile responsiveness */
+.clamp-py {
+  padding-top: clamp(12px, 2.5vh, 24px);
+  padding-bottom: clamp(12px, 2.5vh, 24px);
+}
+.clamp-gap {
+  row-gap: clamp(12px, 2.5vh, 24px);
+}

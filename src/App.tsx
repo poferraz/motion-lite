@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef, Suspense, useCallback, useMemo } from 'react'
+import { useState, useEffect, useRef, Suspense, useCallback, useMemo, createContext } from 'react'
 import { animatePanelChange } from './utils/animations'
 import Header from './components/Header'
 import Dimmer from './components/Dimmer'
 import { getState } from './utils/storage'
 import { storageActions } from './utils/storageReducer'
 import { LandingPanel, UploadPanel, SessionSelect, WorkoutMode } from './lazyComponents'
+import BuilderPanel from './components/BuilderPanel'
 
 // Constants
 const SCHEMA_VERSION = 1
@@ -12,7 +13,7 @@ const STORAGE_DEBOUNCE_MS = 50
 const FOCUS_DELAY_MS = 100
 
 // Types
-export type Panel = 'landing' | 'upload' | 'sessionSelect' | 'workout'
+export type Panel = 'landing' | 'upload' | 'sessionSelect' | 'workout' | 'builder'
 
 export type CsvRow = {
   Day: string
@@ -32,6 +33,30 @@ interface ParsedData {
   parsedRows: CsvRow[]
   sessionNames: string[]
 }
+
+// Type for exercise library entry (based on new schema)
+export interface ExerciseLibraryEntry {
+  id: string;
+  name: string;
+  force: string | null;
+  level: 'beginner' | 'intermediate' | 'expert';
+  mechanic: 'isolation' | 'compound' | null;
+  equipment: string | null;
+  primaryMuscles: string[];
+  secondaryMuscles: string[];
+  instructions: string[];
+  category: string;
+  bodyPart: 'upper body' | 'lower body' | 'core' | 'full body';
+  exerciseType: 'main' | 'warm-up' | 'cool-down' | 'mobility' | 'plyometric' | 'rehab';
+  duration: string | null;
+  repsRange: string | null;
+  setsRange: string | null;
+  videoUrl: string | null;
+  tags: string[];
+  source: string | null;
+}
+
+export const ExerciseLibraryContext = createContext<ExerciseLibraryEntry[] | null>(null);
 
 // Custom hooks
 const useAppState = () => {
@@ -187,6 +212,17 @@ function App() {
   } = useAppState()
 
   const mainRef = useRef<HTMLDivElement>(null)
+  const [exerciseLibrary, setExerciseLibrary] = useState<ExerciseLibraryEntry[] | null>(null);
+
+  useEffect(() => {
+    fetch('/ex-library/exercises.json')
+      .then(res => res.json())
+      .then(setExerciseLibrary)
+      .catch(err => {
+        console.error('Failed to load exercise library', err);
+        setExerciseLibrary([]);
+      });
+  }, []);
 
   // Custom hooks for different concerns
   useStorageSync(currentPanel)
@@ -314,6 +350,11 @@ function App() {
     setCurrentPanel('landing')
   }, [setCurrentPanel])
 
+  // Add handler to go to builder panel
+  const handleStartBuilder = useCallback(() => {
+    setCurrentPanel('builder')
+  }, [setCurrentPanel])
+
   // Panel rendering logic
   const renderPanel = () => {
     switch (currentPanel) {
@@ -325,6 +366,7 @@ function App() {
             onReplaceCSV={handleReplaceCSV}
             onStartWorkoutMode={handleStartWorkoutMode}
             onReset={handleReset}
+            onStartBuilder={handleStartBuilder}
           />
         )
       
@@ -381,40 +423,50 @@ function App() {
           />
         )
       
+      case 'builder':
+        return (
+          <BuilderPanel 
+            exerciseLibrary={exerciseLibrary}
+            onBack={() => setCurrentPanel('landing')}
+          />
+        )
+      
       default:
         return null
     }
   }
 
   return (
-    <div className="iphone-container app-minscreen min-h-[100dvh] flex flex-col bg-zinc-900 text-white">
-      {/* Base full-bleed background to cover safe areas in iOS PWA */}
-      <div className="fixed-fullbleed bg-zinc-900" aria-hidden="true" />
-      {useMemo(() => {
-        // Hide header on Get Started (landing with no data) and Upload panels
-        const hideHeader = (currentPanel === 'upload') || (currentPanel === 'landing' && parsedData === null)
-        if (hideHeader) return null
-        return (
-          <Header 
-            onReset={handleReset} 
-            onExit={handleHeaderExit} 
-            onGoToLanding={handleGoToLanding}
-            dimmerActive={dimmerActive}
-            onToggleDimmer={handleToggleDimmer}
-          />
-        )
-      }, [currentPanel, parsedData, handleReset, handleHeaderExit, handleGoToLanding, dimmerActive, handleToggleDimmer])}
-      
-      <Dimmer open={dimmerActive} onClose={handleDimmerClose} />
-      
-      <main ref={mainRef} className={`iphone-main flex-1 flex flex-col scroll-container ${currentPanel === 'workout' ? 'workout-mode-active' : ''}`} role="main" aria-live="polite">
-        <Suspense fallback={
-          <div className="p-6 text-sm text-zinc-400">Loading…</div>
-        }>
-          {renderPanel()}
-        </Suspense>
-      </main>
-    </div>
+    <ExerciseLibraryContext.Provider value={exerciseLibrary}>
+      <div className="iphone-container app-minscreen min-h-[100dvh] flex flex-col bg-zinc-900 text-white">
+        {/* Base full-bleed background to cover safe areas in iOS PWA */}
+        <div className="fixed-fullbleed bg-zinc-900" aria-hidden="true" />
+        {useMemo(() => {
+          // Hide header on Get Started (landing with no data) and Upload panels
+          const hideHeader = (currentPanel === 'upload') || (currentPanel === 'landing' && parsedData === null)
+          if (hideHeader) return null
+          return (
+            <Header 
+              onReset={handleReset} 
+              onExit={handleHeaderExit} 
+              onGoToLanding={handleGoToLanding}
+              dimmerActive={dimmerActive}
+              onToggleDimmer={handleToggleDimmer}
+            />
+          )
+        }, [currentPanel, parsedData, handleReset, handleHeaderExit, handleGoToLanding, dimmerActive, handleToggleDimmer])}
+        
+        <Dimmer open={dimmerActive} onClose={handleDimmerClose} />
+        
+        <main ref={mainRef} className={`iphone-main flex-1 flex flex-col scroll-container ${currentPanel === 'workout' ? 'workout-mode-active' : ''}`} role="main" aria-live="polite">
+          <Suspense fallback={
+            <div className="p-6 text-sm text-zinc-400">Loading…</div>
+          }>
+            {renderPanel()}
+          </Suspense>
+        </main>
+      </div>
+    </ExerciseLibraryContext.Provider>
   )
 }
 
