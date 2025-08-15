@@ -15,6 +15,11 @@ export default function Toast({
 }: ToastProps) {
   const [isVisible, setIsVisible] = useState(true)
 
+  const handleClose = useCallback(() => {
+    setIsVisible(false)
+    onClose?.()
+  }, [onClose])
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false)
@@ -44,10 +49,7 @@ export default function Toast({
       <div className="flex items-center space-x-2">
         <span className="text-sm font-medium">{message}</span>
         <button
-          onClick={useCallback(() => {
-            setIsVisible(false)
-            onClose?.()
-          }, [onClose])}
+          onClick={handleClose}
           className="ml-2 text-current/80 hover:text-current transition-colors"
           aria-label="Close notification"
         >
