@@ -297,7 +297,7 @@ function App() {
 
   const handleDimmerClose = useCallback(() => {
     setDimmerActive(false)
-  }, [])
+  }, [setDimmerActive])
 
   // Handle exit from header based on current panel context
   const handleHeaderExit = useCallback(() => {

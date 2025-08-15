@@ -66,7 +66,7 @@ function splitCsvLine(line: string, delimiter: ',' | '\t'): string[] {
 function normHeader(h: string): string {
   return h.trim().replace(/\uFEFF/g, '') // strip BOM if present
     .replace(/\s+/g, ' ')               // collapse spaces
-    .replace(/[_\-]+/g, ' ')
+    .replace(/[-_]+/g, ' ')
     .replace(/:/g, '')
     .toLowerCase()
 }

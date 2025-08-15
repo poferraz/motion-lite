@@ -44,7 +44,7 @@ export const initGlobalPressAnimations = (): void => {
     down(el)
   }, { passive: true })
 
-  const cancelEvents: Array<keyof DocumentEventMap> = ['pointerup', 'pointercancel', 'pointerleave']
+  const cancelEvents = ['pointerup', 'pointercancel', 'pointerleave']
   cancelEvents.forEach(type => {
     document.addEventListener(type, (e) => {
       const el = getPressable(e.target)
