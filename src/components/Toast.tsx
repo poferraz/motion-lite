@@ -15,6 +15,11 @@ export default function Toast({
 }: ToastProps) {
   const [isVisible, setIsVisible] = useState(true)
 
+  const handleClose = useCallback(() => {
+    setIsVisible(false)
+    onClose?.()
+  }, [onClose])
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false)
