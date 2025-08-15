@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Edge‑to‑edge, no gutter on iOS PWA */
+html, body, #root { height: 100%; }
+body { margin: 0; }
+
+/* App containers that should fill the screen */
+.app-minscreen {
+  min-height: 100dvh;
+}
+
+/* Fallback for older Safari */
+@supports not (height: 100dvh) {
+  .app-minscreen { min-height: 100svh; }
+}
+
+/* Design System Variables - Dark Theme */
+:root {
+  --brand-purple: #A855F7;
+  --brand-purple-light: #C084FC;
+  --brand-blue: #3B82F6;
+  --brand-blue-light: #60A5FA;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  --surface-background: #000000;
+  --surface-card: #18181B;
+  --surface-border: #27272A;
+  
+  /* Safe area variables */
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+  
+  /* iPhone 16 Pro specific dimensions */
+  --iphone-height: 844px;
+  --header-height: 3.5rem;
+  --main-content-height: calc(var(--iphone-height) - var(--header-height) - var(--safe-top) - var(--safe-bottom));
+}
+
+/* Material Symbols configuration */
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+}
+
+/* Body styles */
+body {
+  font-family: 'Sora', sans-serif;
+  background-color: var(--surface-background);
+  color: var(--text-primary);
+  min-height: 100dvh; /* always fill the dynamic viewport */
+  overflow: hidden;
+}
+
+html, body { 
+  height: 100%; 
+  background: #18181B; /* matches bg-zinc-900 */
+}
+
+/* Improve iOS PWA behavior */
+html, body {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  color-scheme: dark light;
+  overscroll-behavior-y: none;
+}
+
+/* iPhone 16 Pro optimized layouts */
+.iphone-container {
+  /* Prefer stable small viewport height on iOS PWAs to avoid creeping; provide fallbacks */
+  min-height: 100dvh;  /* dynamic viewport height */
+  min-height: 100svh;  /* fallback */
+  max-height: none;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+
+/* App wrappers that should fill the screen */
+.app-minscreen {
+  min-height: 100dvh;
+}
+
+/* Fallback for older Safari */
+@supports not (height: 100dvh) {
+  .app-minscreen { min-height: 100svh; }
+}
+
+.iphone-header {
+  /* Allow safe-area padding to increase overall header height */
+  min-height: calc(var(--header-height) + max(env(safe-area-inset-top), 16px));
+}
+
+.iphone-main {
+  /* Let main flex and scroll safely without toolbar jump */
+  min-height: 0;
+  max-height: none;
+  /* Allow natural page scrolling for panels like Landing and Session Select */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Do not push content up with bottom padding, background will cover safe area */
+  padding-bottom: 0;
+}
+
+/* Ensure workout mode takes full height and footer sticks to bottom */
+.workout-mode-full-height {
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #18181B;
+}
+
+.workout-mode-full-height > main {
+  flex: 1;
+  min-height: 0;
+  /* Avoid tying layout to svh which can change as iOS UI animates/keyboard appears */
+  max-height: none;
+  overflow-y: auto;
+  background-color: #18181B;
+  margin-bottom: 0;
+  /* Reserve space so sticky footer never covers content */
+  padding-bottom: 96px;
+}
+
+.workout-mode-full-height > main > *:last-child {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.workout-mode-full-height > footer {
+  flex-shrink: 0;
+  margin-top: 0;
+  padding-bottom: max(env(safe-area-inset-bottom), 12px);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background-color: #18181B;
+}
+
+/* Override iphone-main constraints for workout mode */
+.iphone-main.workout-mode-active {
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+
+
+/* Tiny utilities for scaling and overflow */
+.min-w-0 {
+  min-width: 0;
+}
+
+/* Scroll containment helpers */
+.scroll-contain {
+  overflow: hidden;
+}
+
+.scroll-y-auto {
+  overflow-y: auto;
+}
+
+/* Drag and Drop Styles */
+.draggable {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.draggable:active {
+  cursor: grabbing;
+}
+
+.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+  z-index: 1000;
+}
+
+.drop-zone {
+  min-height: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.drop-zone.drag-over {
+  background-color: rgba(168, 85, 247, 0.1);
+  border: 2px dashed var(--brand-purple);
+}
+
+/* Ensure drag and drop works on touch devices */
+@media (pointer: coarse) {
+  .draggable {
+    touch-action: none;
+  }
+}
+
+/* Ensure minimum touch target size */
+.min-touch-target {
+  min-height: 44px;
+}
+
+/* Focus ring utilities */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black;
+}
+
+/* Text scaling utilities */
+.text-responsive-sm {
+  @apply text-xs sm:text-sm;
+}
+
+.text-responsive-base {
+  @apply text-sm sm:text-base;
+}
+
+.text-responsive-lg {
+  @apply text-base sm:text-lg;
+}
+
+/* Safe area utilities */
+.safe-area-inset {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Dedicated fixed bars padding helpers */
+.safe-top {
+  padding-top: max(env(safe-area-inset-top), 16px);
+}
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 12px);
+}
+
+/* Prevent vertical scroll in workout */
+.workout-no-scroll {
+  overflow: hidden;
+}
+
+/* Scroll containment to reduce bounce and accidental pull-to-refresh */
+main, .scroll-container {
+  overscroll-behavior: contain;
+}
+
+
+
+/* Full‑bleed fixed background that covers the home indicator zone */
+.fixed-fullbleed {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: calc(100dvh + env(safe-area-inset-bottom));
+  transform: translateY(calc(env(safe-area-inset-bottom) * -1));
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Compact editor styles */
+.compact-editor {
+  @apply h-9 text-sm px-2 rounded border border-zinc-700 bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500;
+}
+
+/* Set chip styles */
+.set-chip {
+  @apply text-xs inline-flex items-center gap-1 px-2 py-1 rounded border transition-colors;
+}
+
+.set-chip-complete {
+  @apply bg-green-500/20 border-green-500/50 text-green-400;
+}
+
+.set-chip-incomplete {
+  @apply bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700;
+}
+
+/* Gradient button styles */
+.btn-gradient {
+  @apply bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 transition-all duration-200 text-center;
+}
+
+/* Card styles */
+.card-dark {
+  @apply bg-zinc-900 rounded-2xl p-6 border border-zinc-800;
+}
+
+/* Icon container styles */
+.icon-container {
+  @apply rounded-full w-12 h-12 flex items-center justify-center mx-auto;
+}
+
+.icon-container-purple {
+  @apply bg-purple-500/20;
+}
+
+.icon-container-zinc {
+  @apply bg-zinc-700/50;
+}

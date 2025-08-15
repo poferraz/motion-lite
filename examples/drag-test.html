@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .draggable {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: grab;
+            border-radius: 8px;
+            user-select: none;
+        }
+        .draggable:active {
+            cursor: grabbing;
+        }
+        .dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+        .drop-zone {
+            min-height: 20px;
+            border: 2px dashed #ccc;
+            margin: 10px 0;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .drop-zone.drag-over {
+            background-color: rgba(109, 40, 217, 0.1);
+            border-color: #6d28d9;
+        }
+        .status {
+            background: #e5e7eb;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+    </style>
+    </head>
+<body>
+    <div class="container">
+        <h1>Drag and Drop Test</h1>
+        <p>This is a simple test to verify HTML5 drag and drop is working in your browser.</p>
+        
+        <div class="status" id="status">
+            Status: Ready to test drag and drop
+        </div>
+        
+        <div class="draggable" draggable="true" data-id="item1">
+            Item 1 - Drag me!
+        </div>
+        
+        <div class="drop-zone" id="drop1">
+            Drop Zone 1
+        </div>
+        
+        <div class="draggable" draggable="true" data-id="item2">
+            Item 2 - Drag me!
+        </div>
+        
+        <div class="drop-zone" id="drop2">
+            Drop Zone 2
+        </div>
+        
+        <div class="draggable" draggable="true" data-id="item3">
+            Item 3 - Drag me!
+        </div>
+        
+        <button onclick="resetTest()" style="margin-top: 20px; padding: 10px 20px; background: #6d28d9; color: white; border: none; border-radius: 8px; cursor: pointer;">
+            Reset Test
+        </button>
+    </div>
+
+    <script>
+        let draggedElement = null;
+        let dropZones = [];
+        
+        function updateStatus(message) {
+            document.getElementById('status').textContent = 'Status: ' + message;
+        }
+        
+        function resetTest() {
+            updateStatus('Test reset - Ready to test drag and drop');
+            // Reset any visual changes
+            document.querySelectorAll('.draggable').forEach(el => {
+                el.classList.remove('dragging');
+            });
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.classList.remove('drag-over');
+            });
+        }
+        
+        // Initialize drag and drop
+        document.addEventListener('DOMContentLoaded', function() {
+            const draggables = document.querySelectorAll('.draggable');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', function(e) {
+                    draggedElement = this;
+                    this.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/plain', this.dataset.id);
+                    updateStatus(`Started dragging ${this.dataset.id}`);
+                });
+                
+                draggable.addEventListener('dragend', function(e) {
+                    this.classList.remove('dragging');
+                    draggedElement = null;
+                    updateStatus('Drag ended');
+                });
+            });
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                });
+                
+                zone.addEventListener('dragenter', function(e) {
+                    e.preventDefault();
+                    this.classList.add('drag-over');
+                    updateStatus(`Entered drop zone: ${this.id}`);
+                });
+                
+                zone.addEventListener('dragleave', function(e) {
+                    e.preventDefault();
+                    // Only remove if we're leaving the zone entirely
+                    if (!this.contains(e.relatedTarget)) {
+                        this.classList.remove('drag-over');
+                    }
+                });
+                
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+                    
+                    if (draggedElement) {
+                        const data = e.dataTransfer.getData('text/plain');
+                        updateStatus(`Dropped ${data} in ${this.id}`);
+                        
+                        // Move the element to this drop zone
+                        this.appendChild(draggedElement);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+

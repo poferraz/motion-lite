@@ -1,0 +1,15 @@
+# Cursor Rules Configuration
+
+## Active Rules
+- **review-cleanup**: Review & Clean Up Codebase
+  - Located at: `.cursor/rules/review-cleanup.md`
+  - Activates code quality analysis and cleanup recommendations
+
+## Usage
+When working with this codebase, Cursor will automatically apply the review-cleanup rule to:
+- Detect unused code and imports
+- Suggest modern TypeScript/React best practices
+- Improve test quality and accessibility
+- Optimize performance and maintainability
+
+The rule is now active and will guide code improvements during development.
