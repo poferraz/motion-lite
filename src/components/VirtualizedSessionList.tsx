@@ -3,7 +3,7 @@ import { useState, useMemo, useRef, useCallback } from 'react'
 interface VirtualizedSessionListProps {
   sessions: string[]
   selectedSessions: string[]
-  onSessionToggle: (session: string) => void // eslint-disable-line no-unused-vars
+  onSessionToggle: (session: string) => void
   itemHeight?: number
   containerHeight?: number
 }

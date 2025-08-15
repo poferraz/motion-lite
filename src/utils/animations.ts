@@ -2,11 +2,6 @@ import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 gsap.registerPlugin(Flip)
 
-// Add this import for type safety and linting
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import type { DocumentEventMap } from 'typescript';
-
 /**
  * Utilities to provide consistent GSAP-powered micro-interactions.
  * All helpers respect prefers-reduced-motion.
@@ -17,12 +12,16 @@ export const isReducedMotionPreferred = (): boolean => {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
+interface WindowWithFlags extends Window {
+  __ml_press_animations__?: boolean;
+}
+
 export const initGlobalPressAnimations = (): void => {
   if (typeof window === 'undefined') return
   const FLAG = '__ml_press_animations__'
   // Prevent double-init in HMR/StrictMode
-  if ((window as any)[FLAG]) return
-  ;(window as any)[FLAG] = true
+  if ((window as WindowWithFlags)[FLAG]) return
+  ;(window as WindowWithFlags)[FLAG] = true
 
   const down = (el: HTMLElement) => {
     if (isReducedMotionPreferred()) return

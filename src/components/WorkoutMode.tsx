@@ -15,6 +15,15 @@ interface WorkoutModeProps {
   onClose: () => void
 }
 
+interface ExerciseUpdate {
+  sets?: number
+  repsText?: string
+  weightText?: string
+  notes?: string
+  formGuidance?: string
+  displayName?: string
+}
+
 function WorkoutMode({ parsedRows, selectedSessions, onClose }: WorkoutModeProps) {
   const [currentSessionIndex, setCurrentSessionIndex] = useState(0)
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState<Record<string, number>>({})
@@ -24,7 +33,7 @@ function WorkoutMode({ parsedRows, selectedSessions, onClose }: WorkoutModeProps
   const [formCollapsed, setFormCollapsed] = useState(true)
   const [editingField, setEditingField] = useState<'sets' | 'reps' | 'weight' | null>(null)
   const [editValue, setEditValue] = useState('')
-  const [exerciseUpdates, setExerciseUpdates] = useState<Record<string, Record<string, any>>>({})
+  const [exerciseUpdates, setExerciseUpdates] = useState<Record<string, Record<string, ExerciseUpdate>>>({})
   const suppressBlurSaveRef = useRef(false)
 
 
