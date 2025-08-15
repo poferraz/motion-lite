@@ -24,6 +24,11 @@ export default function Toast({
     return () => clearTimeout(timer)
   }, [duration, onClose])
 
+  const handleClose = useCallback(() => {
+    setIsVisible(false)
+    onClose?.()
+  }, [onClose])
+
   if (!isVisible) return null
 
   const baseClasses = "fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-3 rounded-xl shadow-lg transition-all duration-300 ease-in-out border"
@@ -44,10 +49,7 @@ export default function Toast({
       <div className="flex items-center space-x-2">
         <span className="text-sm font-medium">{message}</span>
         <button
-          onClick={useCallback(() => {
-            setIsVisible(false)
-            onClose?.()
-          }, [onClose])}
+          onClick={handleClose}
           className="ml-2 text-current/80 hover:text-current transition-colors"
           aria-label="Close notification"
         >
