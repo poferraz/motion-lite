@@ -3,7 +3,7 @@ import { getState, updateState } from './storage'
 /**
  * Update flat template values for an exercise
  */
-export function updateFlat(sessionName: string, exerciseName: string, updates: Record<string, any>): void {
+export function updateFlat(sessionName: string, exerciseName: string, updates: Record<string, unknown>): void {
   try {
     const existing = getState()
     const sessionTemplates = existing.sessionTemplates || {}

@@ -100,22 +100,10 @@ const useInitialState = (
       
       // Restore CSV data if available
       if (savedState.csvText && savedState.parsedRows) {
-        console.log('Restoring CSV data from localStorage:', { 
-          csvText: savedState.csvText.substring(0, 100) + '...', 
-          parsedRows: savedState.parsedRows.length, 
-          sessionNames: savedState.sessionNames 
-        })
         setParsedData({
           rawCsvText: savedState.csvText,
           parsedRows: savedState.parsedRows,
           sessionNames: savedState.sessionNames || []
-        })
-      } else {
-        console.log('No CSV data found in localStorage:', { 
-          hasCsvText: !!savedState.csvText, 
-          hasParsedRows: !!savedState.parsedRows,
-          csvTextLength: savedState.csvText?.length,
-          parsedRowsLength: savedState.parsedRows?.length
         })
       }
       

@@ -66,7 +66,7 @@ function splitCsvLine(line: string, delimiter: ',' | '\t'): string[] {
 function normHeader(h: string): string {
   return h.trim().replace(/\uFEFF/g, '') // strip BOM if present
     .replace(/\s+/g, ' ')               // collapse spaces
-    .replace(/[-_]+/g, ' ')
+    .replace(/-/g, ' ').replace(/_/g, ' ')
     .replace(/:/g, '')
     .toLowerCase()
 }
@@ -83,7 +83,7 @@ export function parseCsv(csvText: string): ParseResult {
   }
 
   // Normalize newlines, remove leading BOM
-  let text = csvText.replace(/^\uFEFF/, '')
+  const text = csvText.replace(/^\uFEFF/, '')
   // Keep original line breaks for correct row numbers
   const rawLines = text.split(/\n/)
 
@@ -116,7 +116,7 @@ export function parseCsv(csvText: string): ParseResult {
   headerCells.forEach((h, idx) => headerIndexByNorm.set(normHeader(h), idx))
 
   // Resolve actual indices for each canonical key
-  const indexOf: Record<keyof CsvRow, number | undefined> = {} as any
+  const indexOf: Partial<Record<keyof CsvRow, number>> = {}
   const errors: string[] = []
 
   // Helper to locate index by variants

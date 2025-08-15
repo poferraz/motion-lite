@@ -23,13 +23,13 @@ vi.mock('./lazyComponents', () => ({
       <button onClick={onStartWorkoutMode}>Start Workout</button>
     </div>
   ),
-  UploadPanel: ({ onSuccess, onCancel }) => (
+  UploadPanel: ({ onSuccess, onCancel }: { onSuccess: (csv: string, rows: unknown[], sessions: string[]) => void; onCancel: () => void; }) => (
     <div data-testid="upload-panel">
       <button onClick={() => onSuccess('test csv', [], [])}>Upload Success</button>
       <button onClick={onCancel}>Cancel</button>
     </div>
   ),
-  SessionSelect: ({ onContinue, onBack }) => (
+  SessionSelect: ({ onContinue, onBack }: { onContinue: (sessions: string[]) => void; onBack: () => void; }) => (
     <div data-testid="session-select-panel">
       <button onClick={() => onContinue(['Session 1'])}>Continue</button>
       <button onClick={onBack}>Back</button>

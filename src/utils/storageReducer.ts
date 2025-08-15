@@ -1,5 +1,5 @@
 import { getState, updateState, clearAll } from './storage'
-import { GTState } from './types'
+import { CsvRow, GTState } from './types'
 
 /**
  * Simple, direct storage actions that work immediately
@@ -20,7 +20,7 @@ export const storageActions = {
   /**
    * Set CSV data (upload or replace)
    */
-  setCsvData: (csvText: string, parsedRows: any[], sessionNames: string[]): void => {
+  setCsvData: (csvText: string, parsedRows: CsvRow[], sessionNames: string[]): void => {
     try {
       console.log('Setting CSV data:', { csvText: csvText.substring(0, 100) + '...', parsedRows: parsedRows.length, sessionNames })
       updateState({ 

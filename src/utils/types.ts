@@ -84,13 +84,15 @@ export type SessionCompletion = {
   completedAt: number
 }
 
+import { CsvRow } from '../App'
+
 /**
  * Global application state stored in localStorage
  */
 export interface GTState {
   panel: string
   csvText?: string
-  parsedRows?: any[] // Accept both CsvRow[] and ParsedRow[]
+  parsedRows?: (CsvRow | ParsedRow)[]
   sessionNames?: string[]
   selectedSessions: string[]
   currentSessionIndex: number

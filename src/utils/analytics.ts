@@ -1,11 +1,11 @@
 // Basic in-memory analytics tracking with a rolling buffer
-type AnalyticsEvent = { event: string; properties?: Record<string, any> }
+type AnalyticsEvent = { event: string; properties?: Record<string, unknown> }
 
 const MAX_EVENTS = 100
 let eventsBuffer: AnalyticsEvent[] = []
 
 export const analytics = {
-  track: (event: string, properties?: Record<string, any>) => {
+  track: (event: string, properties?: Record<string, unknown>) => {
     eventsBuffer.push({ event, properties })
     if (eventsBuffer.length > MAX_EVENTS) {
       eventsBuffer = eventsBuffer.slice(eventsBuffer.length - MAX_EVENTS)
